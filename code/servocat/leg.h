@@ -17,6 +17,7 @@ class Leg {
     float kneeAng,kneeTar;
     int velo;
     unsigned long int lastupdate;
+    bool repo;
 };
 
 Leg::Leg(Servo hip, Servo knee){
@@ -27,6 +28,7 @@ Leg::Leg(Servo hip, Servo knee){
   hipTar = hipAng;
   kneeTar = kneeAng;
   velo = 360;
+  repo = true;
   hipS.write(hipAng);
   kneeS.write(kneeAng);
   lastupdate=millis();
@@ -42,14 +44,20 @@ void Leg::write(){
   update();
   hipS.write(hipAng);
   kneeS.write(kneeAng);
-  Serial.print("hip : ");
-  Serial.print(hipAng);
-  Serial.print(" -> ");
-  Serial.print(hipTar);
-  Serial.print("knee : ");
-  Serial.print(kneeAng);
-  Serial.print(" -> ");
-  Serial.println(kneeTar);
+  if(not reached()){
+    Serial.print("hip : ");
+    Serial.print(hipAng);
+    Serial.print(" -> ");
+    Serial.print(hipTar);
+    Serial.print("knee : ");
+    Serial.print(kneeAng);
+    Serial.print(" -> ");
+    Serial.println(kneeTar);
+  }
+  else if(not repo) {
+    Serial.println("reached target position !");
+    repo = false;
+  }
 }
 
 void Leg::update(){
@@ -77,3 +85,12 @@ void Leg::reset(){
   Serial.println("Leg has been reset !");
   delay(1000);
 };
+
+float getkneeAng(float h){
+  if(h>=130) return 0;
+  if(h<=0) return 180;
+  float phy = 2*asin(-h/2*65);
+  Serial.print("getkneeangle : ");
+  Serial.println(phy);
+  return asin(phy);
+}

@@ -27,25 +27,15 @@ void loop() {
   if(pressed){
     Serial.println("button pressed");
     switch(etat){
-      case left:
-        Serial.println("etat : left");
-        etat=down;
-        myleg.setTarget(45,0,5);
-        break;
       case down:
         Serial.println("etat : down");
-        etat=right;
-        myleg.setTarget(5,90,5);
-        break;
-      case right:
-        Serial.println("etat : right");
         etat=up;
-        myleg.setTarget(180,0,5);
+        myleg.setTarget(0,getkneeAng(0),50);
         break;
       case up:
         Serial.println("etat : up");
-        etat=left;
-        myleg.setTarget(20,160,5);
+        etat=down;
+        myleg.setTarget(100,getkneeAng(130),50);
         break;
     }
     if(pressed) delay(200);
