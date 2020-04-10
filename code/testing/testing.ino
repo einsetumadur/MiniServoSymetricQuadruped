@@ -27,10 +27,6 @@ void setup(){
 }
 
 void loop(){
-  Serial.print("pot1 : ");
-  Serial.print(pot1.getAngle());
-  Serial.print(" pot2 : ");
-  Serial.println(pot2.getAngle());
-  hip.write(pot1.getAngle());
-  knee.write(pot2.getAngle());
+  myleg.setTarget(pot1.getAngle(),pot2.getAngle(),5);
+  myleg.write();
 }

@@ -50,7 +50,11 @@ void Leg::setTarget(int hipTarget, int kneeTarget ,int velocity){
 
 void Leg::setXY(float x ,float y ,int velocity){
   float phy = getPhy(x,y);
-  float teta = getTeta(x,phy);
+  float teta = getTeta(x,y);
+  Serial.print("teta ");
+  Serial.print(teta);
+  Serial.print(" phy ");
+  Serial.println(phy);
   setTarget(phy,teta,velocity);
 }
 
@@ -103,8 +107,8 @@ void Leg::reset(){
   lastReachedFlag = millis();
 };
 
-float getTeta(float x, float phy){
-  float teta = 2*asin(-x/2*65*cos(phy));
+float getTeta(float x, float y){
+  float teta = -2*asin(sqrt(x*x + y*y)/2*65);
   if(isnan(teta)) teta = 0;   // test if teta is not a number (nan error)
   if(teta<0)  teta = 0;
   if(teta>180)teta = 180;
@@ -114,7 +118,7 @@ float getTeta(float x, float phy){
 }
 
 float getPhy(float x, float y){
-  float phy = atan(y/x);
+  float phy = atan(y/x) -180 -asin(sqrt(x*x + y*y)/2*65);
   if(phy<0)  phy = 0;
   if(phy>180)phy = 180;
   Serial.print("hip_angle : ");

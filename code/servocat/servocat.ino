@@ -1,46 +1,47 @@
 #include<Servo.h>
 #include"leg.h"
 
-Servo hip;
-Servo knee;
+int button1pin = 2;
+int button2pin = 4;
+int button3pin = 7;
+int servo1pin = 3;
+int servo2pin = 5;
+int servo3pin = 6;
 
-enum state {left,down,right,up};
+enum state {up,down};
+int etat = up;
 
-const int kneepin = 3;
-const int hippin = 6;
-const int buttonpin = 2;
-bool pressed=0;
-state etat = up;
+Servo hip,knee,hanche;
+
 Leg myleg(hip,knee);
 
-
-void setup() {
+void setup(){
   Serial.begin(9600);
-  knee.attach(kneepin);
-  hip.attach(hippin);
-  pinMode(buttonpin,INPUT);
+  pinMode(button1pin,INPUT); 
+  pinMode(button2pin,INPUT); 
+  pinMode(button3pin,INPUT); 
+  hip.attach(servo1pin);
+  knee.attach(servo2pin);
+  hanche.attach(servo3pin);
   myleg.reset();
 }
 
 void loop() {
-  pressed= digitalRead(buttonpin);
-  if(pressed){
+  if(digitalRead(button1pin)){
     Serial.println("button pressed");
     switch(etat){
       case down:
         Serial.println("etat : down");
         etat=up;
-        //myleg.setXY(80,80,8);
-        myleg.setTarget(0,180,20);
+        myleg.setXY(80,80,8);
         break;
       case up:
         Serial.println("etat : up");
         etat=down;
-        myleg.setTarget(100,0,5);
-        //myleg.setXY(100,100,8);
+        myleg.setXY(100,100,8);
         break;
     }
-    if(pressed) delay(200);
+    if(digitalRead(button1pin)) delay(200);
   }
-  myleg.write();
+  //myleg.write();
 }
