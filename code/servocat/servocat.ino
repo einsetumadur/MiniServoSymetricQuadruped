@@ -30,12 +30,14 @@ void loop() {
       case down:
         Serial.println("etat : down");
         etat=up;
-        myleg.setTarget(0,getkneeAng(0),50);
+        //myleg.setXY(80,80,8);
+        myleg.setTarget(0,180,20);
         break;
       case up:
         Serial.println("etat : up");
         etat=down;
-        myleg.setTarget(100,getkneeAng(130),50);
+        myleg.setTarget(100,0,5);
+        //myleg.setXY(100,100,8);
         break;
     }
     if(pressed) delay(200);
